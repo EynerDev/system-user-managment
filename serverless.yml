@@ -1,0 +1,229 @@
+service: SystemUsersManagment
+frameworkVersion: '3'
+
+useDotenv: true
+
+plugins:
+- serverless-offline
+
+provider:
+  name: aws
+  runtime: python3.9
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - httpApi:
+          path: /
+          method: get
+  
+  RegisterUserRole:
+    name: Register-User-Role
+    handler: Handlers/UserRolesHandler.register_user_role
+    events:
+      - httpApi:
+          path: /user_rol/register
+          method: post
+
+  GetUserRole:
+    name: Get-User-Role
+    handler: Handlers/UserRolesHandler.get_user_roles
+    events:
+      - httpApi:
+          path: /user_rol/list
+          method: get
+
+  UpdateUserRole:
+    name: Update-User-Role
+    handler: Handlers/UserRolesHandler.update_user_role
+    events:
+      - httpApi:
+          path: /user_rol/update
+          method: put
+
+  DesactivateUserRole:
+    name: Desactivate-User-Role
+    handler: Handlers/UserRolesHandler.desactivate_user_role
+    events:
+      - httpApi:
+          path: /user_rol/delete
+          method: post
+
+  RegisterUser:
+    name: Register-User
+    handler: Handlers/UserHandler.create_new_user
+    events:
+      - httpApi:
+          path: /user/register
+          method: post
+
+  GetTokens:
+    name: Get-Tokens
+    handler: Handlers/UserHandler.auth_user
+    events:
+      - httpApi:
+          path: /user/get_token
+          method: post
+
+  DesactivateUser:
+    name: Desactivate_User
+    handler: Handlers/UserHandler.desactivate_suer
+    events:
+      - httpApi:
+          path: /user/delete_user
+          method: post
+
+  UpdateUser:
+    name: Update_User
+    handler: Handlers/UserHandler.update_user
+    events:
+      - httpApi:
+          path: /user/update_user
+          method: put
+  
+  GetUser:
+    name: Get_User
+    handler: Handlers/UserHandler.get_users
+    events:
+      - httpApi:
+          path: /user/list
+          method: get
+
+  RegisterFunction:
+    name: Register-Function
+    handler: Handlers/FunctionHandler.register_function
+    events:
+      - httpApi:
+          path: /function/register
+          method: post
+
+  GetFunction:
+    name: Get-Function
+    handler: Handlers/FunctionHandler.get_functions
+    events:
+      - httpApi:
+          path: /function/list
+          method: get
+
+  UpdateFunction:
+    name: Update-Function
+    handler: Handlers/FunctionHandler.update_function
+    events:
+      - httpApi:
+          path: /function/update
+          method: put
+
+  DesactivateFunction:
+    name: Desactivate-Function
+    handler: Handlers/FunctionHandler.desactivate_function
+    events:
+      - httpApi:
+          path: /function/delete
+          method: post
+
+  RegisterFunctionGroup:
+    name: Register-Function-Group
+    handler: Handlers/FunctionGroupHandler.register_group_function
+    events:
+      - httpApi:
+          path: /function_group/register
+          method: post
+  
+  GetFunctionGroup:
+    name: Get-Function-Group
+    handler: Handlers/FunctionGroupHandler.get_function_group
+    events:
+      - httpApi:
+          path: /function_group/list
+          method: get
+  
+  UpdateFunctionGroup:
+    name: Update-Function-Group
+    handler: Handlers/FunctionGroupHandler.update_function_group
+    events:
+      - httpApi:
+          path: /function_group/update
+          method: put
+
+  DesactivateFunctionGroup:
+    name: Desactivate-Function-Group
+    handler: Handlers/FunctionGroupHandler.desactivate_function_group
+    events:
+      - httpApi:
+          path: /function_group/delete
+          method: post
+  
+  RegisterFunctionRelation:
+    name: Register-Function-Relation
+    handler: Handlers/FunctionGroupHandler.register_function_relation
+    events:
+      - httpApi:
+          path: /function_group/function_assign
+          method: post
+
+  GetFunctionRelation:
+    name: Get-Function-Relation
+    handler: Handlers/FunctionGroupHandler.get_function_relation
+    events:
+      - httpApi:
+          path: /function_group/get_function_relation
+          method: get
+
+  RegisterFunctionGroupAuth:
+    name: Register-Function-Group-Auth
+    handler: Handlers/FunctionGroupHandler.insert_function_group_auth
+    events:
+      - httpApi:
+          path: /function_group/function_role_auth
+          method: post
+  
+  UserPermissionAssing:
+    name: User-Permission-Assing
+    handler: Handlers/UserHandler.user_permission_assign
+    events:
+      - httpApi:
+          path: /user/function_asign
+          method: post
+
+
+  RegisterNewFicha:
+    name: Register_new_ficha
+    handler: Handlers/FichasHandler.register_ficha
+    events:
+      - httpApi:
+          path: /fichas/register_ficha
+          method: post
+
+  GetFichas:
+    name: Get_fichas
+    handler: Handlers/FichasHandler.get_fichas
+    events:
+      - httpApi:
+          path: /fichas/list
+          method: get
+
+  GetStatus:
+    name: Get_Status_Ficha
+    handler: Handlers/FichasHandler.get_status
+    events:
+      - httpApi:
+          path: /fichas/get_status
+          method: get
+
+  DesactivateFicha:
+    name: Desactivate_Ficha
+    handler: Handlers/FichasHandler.desactivate_ficha
+    events:
+      - httpApi:
+          path: /fichas/Desactivate_ficha
+          method: post
+
+
+  Change_Status:
+    name: Change_Status_Ficha
+    handler: Handlers/FichasHandler.change_status
+    events:
+      - httpApi:
+          path: /fichas/change_status
+          method: post
