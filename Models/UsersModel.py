@@ -20,7 +20,7 @@ class UsersModel(Base):
     active = Column(Integer, nullable=True, default=1)
     created_at = Column(DateTime, default=current_timestamp())
     updated_at = Column(DateTime, default=current_timestamp(),
-                       onupdate=current_timestamp())
+                        onupdate=current_timestamp())
 
     def __init__(self, data):
         self.type_doc = data.get('type_doc')

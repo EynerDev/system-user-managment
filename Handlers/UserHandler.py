@@ -30,7 +30,7 @@ def create_new_user(event, context):
     return result
 
 
-@authorizer
+@lamda_response
 def auth_user(event, context):
 
     data = get_event_data(event)
@@ -53,7 +53,7 @@ def user_permission_assign(event, context):
     data = get_event_data(event)
 
     list_validation = [
-        val.param_data(data, "users", list),
+        val.param_data(data, "user_id", int),
         val.param_data(data, "functions", list)
     ]
 

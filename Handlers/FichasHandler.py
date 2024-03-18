@@ -14,7 +14,7 @@ def register_ficha(event, context):
         val.param_data(data, "program_id", int),
         val.param_data(data, "number_ficha", int),
         val.param_data(data, "alias", str),
-        val.param_data(data, "state_id", int)
+        val.param_data(data, "status_id", int)
     ]
 
     val.validate(list_validations)
@@ -68,3 +68,6 @@ def change_status(event, context):
     result = fichas.change_status_ficha(data)
 
     return result
+
+
+

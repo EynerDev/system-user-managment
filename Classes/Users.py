@@ -3,6 +3,8 @@ from Models.UsersModel import UsersModel
 from Models.UsersRolesModel import UserRolesModel, ROOT
 from Utils.encryptPassword import PasswordEncrypt
 from Utils.JwtToken import JWTtoken
+from Models.FunctionsModel import FunctionsModel
+from Models.UserPermissionModel import UserPermissionModel
 
 
 class User:
@@ -156,3 +158,51 @@ class User:
 
         data_response = [user.__repr__() for user in users]
         return data_response
+
+    def user_permission_assign(self, data: dict) -> dict:
+
+        user_id = data["users"]
+        functions = data["functions"]
+
+        # Get users exists
+
+        validate_user_data = session.query(UsersModel).filter(
+            UsersModel.user_id == user_id,
+            UsersModel.active == 1
+        ).all()
+
+        # Get function exists
+        validate_function_data = session.query(FunctionsModel).filter(
+            FunctionsModel.function_id.in_(functions),
+            FunctionsModel.active == 1
+        ).all()
+
+        function_data = []
+        for function in validate_function_data:
+            function_data.append(function.function_id)
+
+        # permission assingn
+        if validate_user_data:
+            for function_id in function_data:
+
+                validate_permission = session.query(
+                    UserPermissionModel
+                ).filter(
+                    UserPermissionModel.user_id == user_id,
+                    UserPermissionModel.function_id == function_id,
+                    UserPermissionModel.active == 1
+                ).first()
+
+                if not validate_permission:
+
+                    data_model = {
+                        "user_id": user_id,
+                        "function_id": function_id
+                    }
+
+                    new_user_permission = UserPermissionModel(data_model)
+                    session.add(new_user_permission)
+                    session.commit()
+
+        return {"statusCode": 201,
+                "msg": " Permisos asignados exitosamente."}

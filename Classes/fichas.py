@@ -2,11 +2,12 @@ from Models.fichasModel import FichasModel, FORMACION, FINALIZADA, CANCELADA
 from Models.ProgramasModel import ProgramsModel
 from Database.conn import session
 from Models.SubItemsModel import SubItemsModel
-from Models.UsersModel import UsersModel
 from Models.Assign_ficha_instructorModel import assign_ficha_instructor
+# from Models.InstructorModel import InstructorModel
 
 
 class Fichas:
+
     def register_ficha(self, data: dict) -> dict:
         program_id = data["program_id"]
         number_ficha = data["number_ficha"]
@@ -38,7 +39,7 @@ class Fichas:
         ).all()
 
         if not validate_program:
-            raise AssertionError("No se encuentra registrado un program con"
+            raise AssertionError("No se encuentra registrado un programa con"
                                  "este program_id")
 
     def get_fichas(self):
@@ -90,80 +91,6 @@ class Fichas:
 
         print(status)
 
-    def assign_ficha(self, data):
+    
 
-        instructor_id = data["instructor_id"]
-        ficha_id = data["ficha_id"]
-
-        self.validate_ficha_assign(instructor_id, ficha_id)
-
-        new_ficha_assign = assign_ficha_instructor(data)
-        session.add(new_ficha_assign)
-        session.commit()
-
-    def validate_ficha_assign(self, instructor_id, ficha_id):
-        validate_ficha_assig = session.query(assign_ficha_instructor).filter(
-            assign_ficha_instructor.instructor_id == instructor_id,
-            assign_ficha_instructor.ficha_id == ficha_id,
-            assign_ficha_instructor.active == 1
-        ).all()
-
-        if validate_ficha_assig:
-            raise AssertionError("¡Error! Ya esta asignada esta ficha"
-                                 "a este instructor")
-
-    # def get_fichas_asigned_instructor(seld, instructor_id):
-
-    #     fichas = aliased(FichasModel)
-    #     fichas_assigned  = aliased(assign_ficha_instructor)
-    #     insgtructor = aliased
-
-    #      condition = [
-    #          fichas_assigned.instructor_id == instructor_id
-    #          fichas.active == 1,
-    #          instructor.active == 1
-    #      ]
-
-    #     assigned_fichas_instructor = session.query(assign_ficha_instructor
-    #                                                ).
-    #         filter(
-    #                assign_ficha_instructor.instructor_id == instructor_id,
-    #                assign_ficha_instructor.active == 1
-    #     )
-    #         fichas_instructores = session.query(Ficha).join(fichas_assigned
-    #                                                         , Instructor.id == Ficha.instructor_id).all()
-    #     data_response =
-    #     # funct_relation_model = aliased(FunctionGroupRelationModel)
-    #     # function_model = aliased(FunctionsModel)
-
-    #     # condition = [
-    #     #     funct_relation_model.function_group_id == function_group_id,
-    #     #     function_model.active == 1,
-    #     #     funct_relation_model.active == 1
-    #     # ]
-
-    #     # if functions:
-    #     #     condition.append(
-    #     #         funct_relation_model.function_id.in_(functions)
-    #     #     )
-
-    #     # function_relation_data = session.query(
-    #     #     funct_relation_model.function_id, function_model.name
-    #     # ).join(
-    #     #     function_model,
-    #     #     funct_relation_model.function_id == function_model.function_id
-    #     # ).filter(
-    #     #     *condition
-    #     # ).all()
-
-    #     # data_response = []
-
-    #     # for function_id, function_name in function_relation_data:
-    #     #     data_response.append(
-    #     #         {
-    #     #             "function_id": function_id,
-    #     #             "function_name": function_name
-    #     #         }
-    #     #     )
-
-    #     # return data_response
+    

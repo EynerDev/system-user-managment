@@ -91,7 +91,7 @@ class UserRoles:
                 raise AssertionError(
                     "Este rol de usuario no puede ser modificado.")
 
-            user_rol_update.active = 0
+            user_rol_delete.active = 0
             session.commit()
 
         return {"statusCode": status_code, "msg": msg}

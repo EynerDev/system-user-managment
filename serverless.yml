@@ -90,6 +90,14 @@ functions:
           path: /user/list
           method: get
 
+  AssignPermissionUser:
+    name: Assign_Permission_User
+    handler: Handlers/UserHandler.user_permission_assign
+    events:
+      - httpApi:
+          path: /user/user_permission_assign
+          method: post
+
   RegisterFunction:
     name: Register-Function
     handler: Handlers/FunctionHandler.register_function
@@ -226,4 +234,44 @@ functions:
     events:
       - httpApi:
           path: /fichas/change_status
+          method: post
+  
+  Get_fichas_asigned_instructor:
+    name: Get_Fichas_Asigned_Instructor
+    handler: Handlers/InstructorHandler.get_fichas_asigned_instructor
+    events:
+      - httpApi:
+          path: /instructor/get_fichas_asigned_instructor
+          method: post
+
+  Register_Instructor:
+    name: Register_instructor
+    handler: Handlers/InstructorHandler.register_instructor
+    events:
+      - httpApi:
+          path: /instructor/register
+          method: post
+
+  Get_Instructors:
+    name: Get_Instructors
+    handler: Handlers/InstructorHandler.get_instructor
+    events:
+      - httpApi:
+          path: /instructor/list
+          method: get
+  
+  Desactivate_instructor:
+    name: Desactivate_Instructors
+    handler: Handlers/InstructorHandler.desactivate_instructor
+    events:
+      - httpApi:
+          path: /instructor/delete
+          method: post
+          
+  Assign_Fichas:
+    name: Assign_Fichas
+    handler: Handlers/InstructorHandler.assign_ficha
+    events:
+      - httpApi:
+          path: /instructor/assign_ficha
           method: post
