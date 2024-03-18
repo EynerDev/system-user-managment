@@ -81,24 +81,52 @@ class Instructor:
     def assign_ficha(self, data):
 
         instructor_id = data["instructor_id"]
-        ficha_id = data["ficha_id"]
+        fichas_id = data["fichas_id"]
 
-        self.validate_ficha_assign(instructor_id, ficha_id)
-
-        new_ficha_assign = assign_ficha_instructor(data)
-        session.add(new_ficha_assign)
-        session.commit()
-
-    def validate_ficha_assign(self, instructor_id, ficha_id):
         validate_ficha_assig = session.query(assign_ficha_instructor).filter(
             assign_ficha_instructor.instructor_id == instructor_id,
-            assign_ficha_instructor.ficha_id == ficha_id,
+            assign_ficha_instructor.ficha_id.in_(fichas_id),
             assign_ficha_instructor.active == 1
         ).all()
 
         if validate_ficha_assig:
-            raise AssertionError("¡Error! Ya esta asignada esta ficha"
+            raise AssertionError("¡Error! Ya esta asignada esta ficha "
                                  "a este instructor")
+        for ficha_id in fichas_id:
+
+            valid_ficha_exist = session.query(FichasModel).filter(
+                FichasModel.ficha_id == ficha_id,
+                FichasModel.active == 1
+            ).first()
+
+            if not valid_ficha_exist:
+                raise AssertionError(
+                    f"¡ERROR! la ficha con ficha_id ={ficha_id} no existe"
+                    " en la base de datos")
+            data_model = {
+                'instructor_id': instructor_id,
+                'ficha_id': ficha_id
+            }
+
+            new_ficha_assign = assign_ficha_instructor(data_model)
+            session.add(new_ficha_assign)
+            session.commit()
+
+        return {
+            "statusCode": 200,
+            "msg": "Fichas asignadas de manera exitosa"
+        }
+
+    # def validate_ficha_assign(self, instructor_id, fichas_id):
+    #     validate_ficha_assig = session.query(assign_ficha_instructor).filter(
+    #         assign_ficha_instructor.instructor_id == instructor_id,
+    #         FichasModel.ficha_id.in_(fichas_id),
+    #         assign_ficha_instructor.active == 1
+    #     ).all()
+
+    #     if validate_ficha_assig:
+    #         raise AssertionError("¡Error! Ya esta asignada esta ficha"
+    #                              "a este instructor")
 
     def get_fichas_asigned_instructor(self, data):
 

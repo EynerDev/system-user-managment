@@ -70,7 +70,7 @@ def assign_ficha(event, context):
 
     list_validation = [
         val.param_data(data, "instructor_id", int),
-        val.param_data(data, "ficha_id", int),
+        val.param_data(data, "fichas_id", list),
 
     ]
 

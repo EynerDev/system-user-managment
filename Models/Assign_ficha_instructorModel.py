@@ -19,10 +19,3 @@ class assign_ficha_instructor(Base):
     def __init__(self, data):
         self.instructor_id = data.get("instructor_id"),
         self.ficha_id = data.get("ficha_id")
-
-    def __repr__(self):
-        return {
-            'instructor_id': self.instructor_id,
-
-
-        }
