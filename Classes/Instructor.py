@@ -101,7 +101,7 @@ class Instructor:
 
             if not valid_ficha_exist:
                 raise AssertionError(
-                    f"¡ERROR! la ficha con ficha_id ={ficha_id} no existe"
+                    f"¡ERROR! la ficha con ficha_id = {ficha_id} no existe "
                     " en la base de datos")
             data_model = {
                 'instructor_id': instructor_id,
@@ -116,17 +116,6 @@ class Instructor:
             "statusCode": 200,
             "msg": "Fichas asignadas de manera exitosa"
         }
-
-    # def validate_ficha_assign(self, instructor_id, fichas_id):
-    #     validate_ficha_assig = session.query(assign_ficha_instructor).filter(
-    #         assign_ficha_instructor.instructor_id == instructor_id,
-    #         FichasModel.ficha_id.in_(fichas_id),
-    #         assign_ficha_instructor.active == 1
-    #     ).all()
-
-    #     if validate_ficha_assig:
-    #         raise AssertionError("¡Error! Ya esta asignada esta ficha"
-    #                              "a este instructor")
 
     def get_fichas_asigned_instructor(self, data):
 
