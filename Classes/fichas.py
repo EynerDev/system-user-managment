@@ -2,7 +2,6 @@ from Models.fichasModel import FichasModel, FORMACION, FINALIZADA, CANCELADA
 from Models.ProgramasModel import ProgramsModel
 from Database.conn import session
 from Models.SubItemsModel import SubItemsModel
-from Models.Assign_ficha_instructorModel import assign_ficha_instructor
 # from Models.InstructorModel import InstructorModel
 
 
@@ -70,6 +69,7 @@ class Fichas:
             session.commit()
 
         return {
+            "statusCode": 200,
             "msg": "Ficha Desactivada"
         }
 
@@ -80,17 +80,18 @@ class Fichas:
         change_status = session.query(FichasModel).filter(
             FichasModel.number_ficha == number_ficha,
             FichasModel.active == 1
-        ).all()
+        ).first()
 
         if status in [FORMACION, FINALIZADA, CANCELADA]:
-            change_status.status_id == status
+            change_status.status_id = status
             session.commit()
+
+            return {
+                "statusCode": 200,
+                "msg": "Estado cambiado exitosamente"
+            }
 
         else:
             raise AssertionError("¡ERROR! status_id no valido")
 
         print(status)
-
-    
-
-    

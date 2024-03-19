@@ -98,11 +98,6 @@ class User:
             UsersModel.active == 1
         ).first()
 
-        # role = session.query(UsersModel, UserRolesModel
-        #                      ).filter(UsersModel.user_role_id
-        #                               == UserRolesModel.user_role_id
-        #                               ).first()
-
         if not desactivateUser:
             raise AssertionError(
                 "¡ERROR! Al desactivar el usuario"
@@ -115,14 +110,13 @@ class User:
                     f"{desactivateUser.user_role_id} no puede"
                     "ser eliminado"
                 )
-            desactivateUser.active == 0
+            desactivateUser.active = 0
             session.commit()
 
         return {
-            "statusCode": "200", "msg": "Ok",
-            "data": {
-                "msg": "Usuario desactivado"
-            }
+            "statusCode": "200",
+            "msg": "Usuario desactivado",
+
         }
 
     def update_User(self, data):

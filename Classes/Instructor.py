@@ -32,9 +32,16 @@ class Instructor:
         session.add(newInstructor)
         session.commit()
 
+        name = f"{validate_rol_instructor.first_name} {
+            validate_rol_instructor.last_name}"
         return {
             "status_code": 200,
-            "msg": "Instructor registrado con exito"
+            "msg": "Instructor registrado con exito",
+            "data": {
+                "name": name,
+                "email": validate_rol_instructor.email,
+                "number_phone": validate_rol_instructor.number
+            }
         }
 
     def get_instructor(self):
@@ -163,7 +170,7 @@ class Instructor:
                         "Alias": ficha.alias,
                         "Programa": program.name_program,
                         "Numero de ficha": ficha.number_ficha,
-                        "status": status_ficha.description})
+                        "": status_ficha.description})
 
             return {
                 "statusCode": 200,
