@@ -5,6 +5,8 @@ from Models.UsersModel import UsersModel
 from Models.UsersRolesModel import INSTRUCTOR
 from Models.Assign_ficha_instructorModel import assign_ficha_instructor
 from Models.fichasModel import FichasModel
+from Models.ProgramasModel import ProgramsModel
+from Models.SubItemsModel import SubItemsModel
 
 
 class Instructor:
@@ -36,22 +38,27 @@ class Instructor:
         }
 
     def get_instructor(self):
-
-        valid_user_register_instructor = session.query(UsersModel).filter(
+        valid_users_register_instructor = session.query(UsersModel).filter(
             UsersModel.user_role_id == INSTRUCTOR,
             UsersModel.active == 1
-        ).first()
+        ).all()
 
-        if valid_user_register_instructor:
-            for Instructor in valid_user_register_instructor:
-                return {
-                    "statusCode": 200,
-                    "user_id":  valid_user_register_instructor.user_id,
-                    "first_name": valid_user_register_instructor.first_name,
-                    "last_name": valid_user_register_instructor.last_name,
-                    "email": valid_user_register_instructor.email
+        instructors_data = []
+        for valid_user_register_instructor in valid_users_register_instructor:
 
-                }
+            name_instructor = f"{valid_user_register_instructor.first_name} {
+                valid_user_register_instructor.last_name}"
+
+            instructors_data.append({
+                "user_id": valid_user_register_instructor.user_id,
+                "name_instructor": name_instructor,
+                "email": valid_user_register_instructor.email
+            })
+
+        return {
+            "statusCode": 200,
+            "msg": instructors_data
+        }
 
     def desactivate_instructor(self, data):
         Instructor_id = data["instructor_id"]
@@ -143,7 +150,20 @@ class Instructor:
                 ).first()
 
                 if ficha:
-                    nombres_fichas_asignadas.append(ficha.alias)
+                    program = session.query(ProgramsModel).filter(
+                        ProgramsModel.program_id == ficha.program_id,
+                        ProgramsModel.active == 1
+                    ).first()
+
+                    status_ficha = session.query(SubItemsModel).filter(
+                        SubItemsModel.sub_items_id == ficha.status_id
+                    ).first()
+
+                    nombres_fichas_asignadas.append({
+                        "Alias": ficha.alias,
+                        "Programa": program.name_program,
+                        "Numero de ficha": ficha.number_ficha,
+                        "status": status_ficha.description})
 
             return {
                 "statusCode": 200,
