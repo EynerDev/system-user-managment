@@ -168,8 +168,6 @@ class Instructor:
                     "Alias": ficha.alias,
                     "Programa": program.name_program,
                     "Numero de ficha": ficha.number_ficha,
-                    # Asumiendo que este campo en blanco se refiere a algo
-                    # específico
                     "estado_ficha": status_ficha.description
                 })
 
