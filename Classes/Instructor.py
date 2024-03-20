@@ -117,6 +117,7 @@ class Instructor:
                 raise AssertionError(
                     f"¡ERROR! la ficha con ficha_id = {ficha_id} no existe "
                     " en la base de datos")
+
             data_model = {
                 'instructor_id': instructor_id,
                 'ficha_id': ficha_id
@@ -138,47 +139,48 @@ class Instructor:
         instructor_exist = self.validate_instructor_exist(instructor_id)
 
         if instructor_exist:
-            fichas_asignadas = session.query(assign_ficha_instructor).filter(
-                assign_ficha_instructor.instructor_id == instructor_id
-            ).all()
+            # Realizar un JOIN para obtener directamente la información 
+            # necesaria de las fichas asignadas
+            fichas_asignadas = session.query(
+                assign_ficha_instructor, FichasModel, ProgramsModel,
+                SubItemsModel)\
+                .join(FichasModel,
+                      assign_ficha_instructor.ficha_id == FichasModel.ficha_id
+                      )\
+                .join(ProgramsModel,
+                      FichasModel.program_id == ProgramsModel.program_id)\
+                .join(SubItemsModel,
+                      FichasModel.status_id == SubItemsModel.sub_items_id)\
+                .filter(assign_ficha_instructor.instructor_id
+                        == instructor_id, ProgramsModel.active == 1)\
+                .all()
 
-            instructor_name = session.query(UsersModel).filter(
-                UsersModel.user_id == instructor_exist.user_id
-            ).first()
+            instructor_data = session.query(UsersModel).filter(
+                UsersModel.user_id == instructor_exist.user_id).first()
 
-            name_instructor = f"{instructor_name.first_name} {
-                instructor_name.last_name}"
+            name_instructor = f"{instructor_data.first_name} {
+                instructor_data.last_name}"
 
             nombres_fichas_asignadas = []
 
-            for asignacion in fichas_asignadas:
-                ficha = session.query(FichasModel).filter(
-                    FichasModel.ficha_id == asignacion.ficha_id
-                ).first()
-
-                if ficha:
-                    program = session.query(ProgramsModel).filter(
-                        ProgramsModel.program_id == ficha.program_id,
-                        ProgramsModel.active == 1
-                    ).first()
-
-                    status_ficha = session.query(SubItemsModel).filter(
-                        SubItemsModel.sub_items_id == ficha.status_id
-                    ).first()
-
-                    nombres_fichas_asignadas.append({
-                        "Alias": ficha.alias,
-                        "Programa": program.name_program,
-                        "Numero de ficha": ficha.number_ficha,
-                        "": status_ficha.description})
+            for asignacion, ficha, program, status_ficha in fichas_asignadas:
+                nombres_fichas_asignadas.append({
+                    "Alias": ficha.alias,
+                    "Programa": program.name_program,
+                    "Numero de ficha": ficha.number_ficha,
+                    # Asumiendo que este campo en blanco se refiere a algo
+                    # específico
+                    "estado_ficha": status_ficha.description
+                })
 
             return {
                 "statusCode": 200,
                 "msg": {
                     "Instructor_name": name_instructor,
-                    "email": instructor_name.email,
+                    "email": instructor_data.email,
                     "fichas": nombres_fichas_asignadas
-                }}
+                }
+            }
         else:
             return {
                 "statusCode": 404,
