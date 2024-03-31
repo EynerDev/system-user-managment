@@ -139,7 +139,7 @@ class Instructor:
         instructor_exist = self.validate_instructor_exist(instructor_id)
 
         if instructor_exist:
-            # Realizar un JOIN para obtener directamente la información 
+            # Realizar un JOIN para obtener directamente la información
             # necesaria de las fichas asignadas
             fichas_asignadas = session.query(
                 assign_ficha_instructor, FichasModel, ProgramsModel,

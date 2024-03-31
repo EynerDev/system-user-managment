@@ -68,7 +68,7 @@ functions:
 
   DesactivateUser:
     name: Desactivate_User
-    handler: Handlers/UserHandler.desactivate_suer
+    handler: Handlers/UserHandler.desactivate_user
     events:
       - httpApi:
           path: /user/delete_user

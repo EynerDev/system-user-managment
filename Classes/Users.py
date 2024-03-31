@@ -120,6 +120,7 @@ class User:
         }
 
     def update_User(self, data):
+
         user_name = data["user_name"]
         password_user = data["password"]
 
@@ -134,11 +135,9 @@ class User:
             )
         else:
 
-            updateUser = data
-            session.commit()
-
             PasswordEncript = PasswordEncrypt.encrypt(password_user)
-            data["password"] = PasswordEncript
+            updateUser.password = PasswordEncript
+            session.commit()
 
             return {
                 "message": "Usuario actualizado correctamente",
@@ -176,7 +175,10 @@ class User:
             function_data.append(function.function_id)
 
         # permission assingn
-        if validate_user_data:
+        if not validate_user_data:
+            raise AssertionError("!ERROR¡ no se encontro usuario con ese "
+                                 "User_id")
+        else:
             for function_id in function_data:
 
                 validate_permission = session.query(
