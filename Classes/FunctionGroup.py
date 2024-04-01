@@ -1,4 +1,4 @@
-from Models.FunctionGroupModel import FunctionGroupsModel
+from Models.FunctionGroupModel import FunctionGroupsModel, FUNCTIONS_ROUTE
 from Models.FunctionGroupRelationModel import FunctionGroupRelationModel
 from Models.FunctionsModel import FunctionsModel
 from Models.FunctionGroupRoleAuthModel import FunctionUserRoleAuthModel
@@ -72,9 +72,12 @@ class FunctionGroup:
         if not update_function_group:
             return {"statusCode": 404,
                     "msg": "Este grupo de funciones no existe."}
-
-        update_function_group.active = 0
-        session.commit()
+        if function_group_id == FUNCTIONS_ROUTE:
+            raise AssertionError("!ERROR¡ No puede eliminar este grupo de "
+                                 "funciones")
+        else:
+            update_function_group.active = 0
+            session.commit()
 
     def validate_function_group(self, name: str):
 

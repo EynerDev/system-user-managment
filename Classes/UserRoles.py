@@ -14,12 +14,11 @@ class UserRoles:
         session.commit()
 
         data_response = {
-             "user_role_id": insert_role.user_role_id,
-             "role_name": insert_role.role_name
+            "user_role_id": insert_role.user_role_id,
+            "role_name": insert_role.role_name
         }
 
         return {"statusCode": 201, "msg": data_response}
-    
 
     def get_user_roles(self, data) -> list:
 
@@ -52,16 +51,14 @@ class UserRoles:
             UserRolesModel.active == 1
         ).first()
 
-        status_code = 200
-        msg = "Ok"
-
         if not user_rol_update:
-            status_code = 404
-            msg = "No se encontro un rol con esta user_role_id"
+            raise AssertionError(
+                "No se encontro un rol con esta user_role_id")
+
         else:
             if user_role_id == ROOT:
                 raise AssertionError(
-                    "Este rol de usuario no se puede editable.")
+                    "!ERROR¡ este rol de usuario no es Modificable")
 
             if user_rol_update.role_name != role_name:
                 self.validate_user_role_name_exists(role_name)
@@ -69,7 +66,10 @@ class UserRoles:
             user_rol_update.role_name = role_name
             session.commit()
 
-        return {"statusCode": status_code, "msg": msg}
+        return {
+            "statusCode": 200,
+            "msg": "Cambios realizados de manera exitosa"
+        }
 
     def desactivate_user_role(self, data):
 

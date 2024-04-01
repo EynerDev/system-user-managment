@@ -275,3 +275,19 @@ functions:
       - httpApi:
           path: /instructor/assign_ficha
           method: post
+
+  Register_Program:
+    name: Register_Program
+    handler: Handlers/ProgramsHandler.register_program
+    events:
+      - httpApi:
+          path: /program/register_program
+          method: post
+
+  Get_Programs:
+    name: Get_Programs
+    handler: Handlers/ProgramsHandler.get_programs
+    events:
+      - httpApi:
+          path: /programs/list
+          method: get

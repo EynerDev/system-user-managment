@@ -85,12 +85,11 @@ def get_function_relation(event, context):
 
     list_validations = [
         val.param_data(data, "function_group_id", int),
-        val.param_data(data, "functions", list, False),
     ]
 
     val.validate(list_validations)
 
-    result = function_group.get_function_relation(data)
+    result = functionGroup.get_function_relation(data)
 
     return result
 
@@ -107,7 +106,7 @@ def insert_function_group_auth(event, context):
 
     val.validate(list_validations)
 
-    result = function_group.insert_function_group_auth(data)
+    result = functionGroup.insert_function_group_auth(data)
 
     return result
 

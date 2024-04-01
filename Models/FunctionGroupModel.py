@@ -1,6 +1,11 @@
 from sqlalchemy import Column, String, DateTime, Integer
 from Database.conn import Base
 
+FUNCTIONS_ROUTE = 1
+FUNCTIONS_ADMIN = 2
+FUNCTIONS_INSTRUCTOR = 3
+FUNCTIONS_APRENDIZ = 4
+
 
 class FunctionGroupsModel(Base):
 
@@ -13,7 +18,7 @@ class FunctionGroupsModel(Base):
     created_at = Column(DateTime, nullable=False,
                         server_default='CURRENT_TIMESTAMP')
     updated_at = Column(DateTime, nullable=False,
-                       server_default='CURRENT_TIMESTAMP')
+                        server_default='CURRENT_TIMESTAMP')
 
     def __init__(self, data):
         self.name = data.get("name").upper()

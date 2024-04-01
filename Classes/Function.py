@@ -72,10 +72,16 @@ class Function:
 
         if not update_function:
             return {"statusCode": 404,
-                    "msg": "No se encontro esta funcion."}
+                    "msg": "!ERROR¡ No se encontro esta funcion dentro del "
+                    "sistema."}
 
         update_function.active = 0
         session.commit()
+
+        return {
+            "statusCode": 200,
+            "msg": "Funcion Eliminada de manera correcta"
+        }
 
     def validate_function_exists(self, path: str, method: str):
 
