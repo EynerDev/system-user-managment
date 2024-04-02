@@ -84,13 +84,13 @@ class Instructor:
 
     def validate_instructor_exist(self, instructor_id):
 
-        validate_instructor_exit = session.query(InstructorModel).filter(
+        validate_instructor_exist = session.query(InstructorModel).filter(
             InstructorModel.instructor_id == instructor_id,
             InstructorModel.active == 1
         ).first()
 
-        if validate_instructor_exit:
-            return validate_instructor_exit
+        if validate_instructor_exist:
+            return validate_instructor_exist
 
     def assign_ficha(self, data):
 

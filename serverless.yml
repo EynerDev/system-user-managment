@@ -291,3 +291,11 @@ functions:
       - httpApi:
           path: /programs/list
           method: get
+          
+  Desactivate_Program:
+    name: Desactivate_Program
+    handler: Handlers/ProgramsHandler.desactivate_program
+    events:
+      - httpApi:
+          path: /programs/delete
+          method: post
