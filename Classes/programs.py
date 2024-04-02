@@ -68,15 +68,3 @@ class Programs:
             "statusCode": 200,
             "msg": "Programa Desactivado Exitosamente"
         }
-
-        def validate_program_exist(self, program_id: int):
-
-            validate_program_id = session.query(ProgramsModel).filter(
-                ProgramsModel.program_id == program_id,
-                ProgramsModel.active == 1
-            ).all()
-
-            if not validate_program_id:
-                raise AssertionError(
-                    "!ERROR¡ no existe programa registrado con este program_id"
-                    )
