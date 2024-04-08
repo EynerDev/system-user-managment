@@ -74,9 +74,9 @@ functions:
           path: /user/delete_user
           method: post
   
-  InsertMasiveUsers:
-    name: Insert_Masive_Users
-    handler: Handlers/UserHandler.insert_masive_apprentice
+  MassiveUserInsertion:
+    name: Massive_User_Insertion
+    handler: Handlers/UserHandler.massive_user_insertion
     events:
       - httpApi:
           path: /user/insert_masive
