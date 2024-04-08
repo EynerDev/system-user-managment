@@ -73,6 +73,14 @@ functions:
       - httpApi:
           path: /user/delete_user
           method: post
+  
+  InsertMasiveUsers:
+    name: Insert_Masive_Users
+    handler: Handlers/UserHandler.insert_masive_apprentice
+    events:
+      - httpApi:
+          path: /user/insert_masive
+          method: post
 
   UpdateUser:
     name: Update_User
@@ -281,7 +289,7 @@ functions:
     handler: Handlers/ProgramsHandler.register_program
     events:
       - httpApi:
-          path: /program/register_program
+          path: /programs/register_program
           method: post
 
   Get_Programs:

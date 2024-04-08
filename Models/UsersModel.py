@@ -26,7 +26,7 @@ class UsersModel(Base):
         self.type_doc = data.get('type_doc')
         self.document = data.get('document')
         self.first_name = data.get('first_name')
-        self.last_name = data.get('last_name').title()
+        self.last_name = data.get('last_name')
         self.email = data.get('email')
         self.number = data.get('number')
         self.user_role_id = data.get('user_role_id')

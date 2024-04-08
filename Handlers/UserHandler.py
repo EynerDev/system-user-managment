@@ -30,6 +30,20 @@ def create_new_user(event, context):
     return result
 
 
+@authorizer
+def insert_masive_apprentice(event, context):
+    data = get_event_data(event)
+
+    list_validation = [
+        val.param_data(data, "file_content_base64", str),]
+
+    val.validate(list_validation)
+
+    result = user.insert_masive_users(data)
+
+    return result
+
+
 @lamda_response
 def auth_user(event, context):
 

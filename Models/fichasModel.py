@@ -1,6 +1,7 @@
 from sqlalchemy import Column, String, DateTime, Integer
 from Database.conn import Base
 from sqlalchemy.sql.functions import current_timestamp
+
 FORMACION = 4
 FINALIZADA = 5
 CANCELADA = 6

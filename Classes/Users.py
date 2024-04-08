@@ -1,10 +1,13 @@
 from Database.conn import session
 from Models.UsersModel import UsersModel
-from Models.UsersRolesModel import UserRolesModel, ROOT
+from Models.UsersRolesModel import ROOT
 from Utils.encryptPassword import PasswordEncrypt
 from Utils.JwtToken import JWTtoken
 from Models.FunctionsModel import FunctionsModel
 from Models.UserPermissionModel import UserPermissionModel
+import base64
+import io
+import pandas as pd
 
 
 class User:
@@ -23,6 +26,63 @@ class User:
         session.add(newUser)
         session.commit()
         return {"statusCode": 201, "data": {"message": "Usuario Registrado"}}
+
+    def insert_masive_users(self, data):
+        archivo = data["file_content_base64"]
+
+        decoded_content = base64.b64decode(archivo).decode('utf-8')
+        print(decoded_content)
+
+        doc_mapping = {
+            'cedula de ciudadania': 1,
+            'tarjeta de identidad': 11,
+            'cedula de extranjeria': 2,
+            'pep': 3
+        }
+
+        rol_mapping = {
+            'aprendiz': 3,
+            'instructor': 2
+        }
+
+        try:
+            # Leer el archivo CSV como un DataFrame de pandas
+            csv_data = pd.read_csv(io.StringIO(decoded_content), sep=';')
+
+            # Convertir los nombres de las columnas a minúsculas
+            csv_data.columns = map(str.lower, csv_data.columns)
+            print(csv_data.columns)
+
+            # Mapear los valores de las columnas 'type_doc' y 'user_role_id'
+            csv_data['type_doc'] = csv_data['type_doc'].map(doc_mapping)
+            csv_data['user_role_id'] = csv_data['user_role_id'].map(
+                rol_mapping)
+            print(csv_data["type_doc"].value_counts())
+            print(csv_data["user_role_id"].value_counts())
+
+            # Validar que no haya columnas vacías
+            if csv_data.isnull().values.any():
+                raise AssertionError(
+                    "Error: Se encontró una columna vacía en el archivo CSV.")
+
+            # Insertar usuarios en la base de datos
+            for index, row in csv_data.iterrows():
+                password = row.get("password")
+                if password:
+                    password_hash = PasswordEncrypt()
+                    row["password"] = password_hash.encrypt(password)
+
+                insert_user = UsersModel(row)
+                session.add(insert_user)
+                session.commit()
+
+        except Exception as e:
+            raise AssertionError(f"Error al procesar el archivo CSV: {e}")
+
+        return {
+            "statusCode": 200,
+            "msg": "Usuarios insertados correctamente"
+        }
 
     def validate_user_exist(self, user_name):
         validate_user = session.query(UsersModel).filter(
