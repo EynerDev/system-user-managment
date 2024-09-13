@@ -4,21 +4,35 @@ from sqlalchemy.ext.declarative import declarative_base
 from dotenv import load_dotenv
 import os
 
+# Cargar las variables de entorno desde un archivo .env
 load_dotenv()
 
+try:
+    # Obtener valores de las variables de entorno
+    host = os.getenv("HOST_DB")
+    user_name = os.getenv("USERNAME_DB")
+    password = os.getenv("PASSWORD_DB")
+    database = os.getenv("DATABASE_NAME")
 
-host = os.getenv("HOST_DB")
-user_name = os.getenv("USERNAME_DB")
+    # Asegurarse de que las variables esenciales están presentes
+    if not all([host, user_name, database]):
+        raise ValueError("Faltan valores de variables de entorno esenciales")
 
-password = os.getenv("PASSWORD_DB")
-password = f":{password}" if password else ""
+    # Construir el URI de conexión
+    URI = f"mysql+pymysql://{user_name}:{password}@{host}/{database}"
+    print(f"Conectando a la base de datos con URI: {URI}")
 
-database = os.getenv("DATABASE_NAME")
+    # Crear el motor de SQLAlchemy
+    engine = create_engine(URI)
 
-URI = f"mysql+pymysql://{user_name}{password}@{host}/{database}"
-print(URI)
-engine = create_engine(URI)
+    # Crear una base declarativa
+    Base = declarative_base()
 
-Base = declarative_base()
-Session = sessionmaker(bind=engine)
-session = Session()
+    # Configurar la sesión
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    print("Conexión a la base de datos establecida correctamente.")
+
+except Exception as e:
+    print(f"Se produjo un error: {e}")

@@ -1,5 +1,5 @@
 from Utils.Validation import Validation
-from Utils.EventTool import lamda_response, get_event_data, authorizer
+from Utils.EventTool import lambda_response, get_event_data, authorizer
 from Classes.Users import User
 
 val = Validation()
@@ -44,7 +44,7 @@ def massive_user_insertion(event, context):
     return result
 
 
-@lamda_response
+@lambda_response
 def auth_user(event, context):
 
     data = get_event_data(event)

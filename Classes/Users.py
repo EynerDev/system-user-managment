@@ -142,10 +142,10 @@ class User:
             raise AssertionError("Contraseña Incorrecta")
 
         jwt_token = JWTtoken()
-        print(JWTtoken())
         token = jwt_token.encode({
             "user_id": user_auth_id
         })
+        print("token: ", token)
 
         return {
             'token': token

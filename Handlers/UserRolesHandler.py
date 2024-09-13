@@ -1,5 +1,5 @@
 from Utils.Validation import Validation
-from Utils.EventTool import authorizer, get_event_data, lamda_response
+from Utils.EventTool import authorizer, get_event_data
 from Classes.UserRoles import UserRoles
 
 val = Validation()

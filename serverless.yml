@@ -1,14 +1,28 @@
 service: SystemUsersManagment
-frameworkVersion: '3'
+frameworkVersion: '4'
 
 useDotenv: true
 
 plugins:
 - serverless-offline
 
+org: null
+app: null
+
+package:
+  exclude:
+    - node_modules/**
+    - .git/**
+    - tests/**
+    - README.md
+
+
+
 provider:
   name: aws
   runtime: python3.9
+  region: us-east-1
+
 
 functions:
   hello:

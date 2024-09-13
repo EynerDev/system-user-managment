@@ -1,4 +1,4 @@
-from Utils.EventTool import lamda_response, authorizer, get_event_data
+from Utils.EventTool import authorizer, get_event_data
 from Utils.Validation import Validation
 from Classes.Function import Function
 

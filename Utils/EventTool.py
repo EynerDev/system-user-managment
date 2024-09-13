@@ -21,7 +21,7 @@ def json_response(statusCode, message, data=[]):
     return response
 
 
-def lamda_response(function):
+def lambda_response(function):
     def validation(event, context):
         statusCode = 200
         msg = "Ok"
