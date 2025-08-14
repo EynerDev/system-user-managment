@@ -6,6 +6,11 @@ val = Validation()
 user = User()
 
 
+def hello(event, context):
+    result = user.hello()
+    return result
+
+
 @authorizer
 def create_new_user(event, context):
 
@@ -51,7 +56,7 @@ def auth_user(event, context):
 
     list_validation = [
         val.param_data(data, "user_name", str),
-        val.param_data(data, "password", str, True, 16, 8)
+        val.param_data(data, "password", str, True, 16, 6)
     ]
 
     val.validate(list_validation)

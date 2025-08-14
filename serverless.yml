@@ -1,10 +1,11 @@
 service: SystemUsersManagment
-frameworkVersion: '4'
+frameworkVersion: '3'
 
 useDotenv: true
 
 plugins:
 - serverless-offline
+- serverless-azure-functions
 
 org: null
 app: null
@@ -19,16 +20,30 @@ package:
 
 
 provider:
-  name: aws
-  runtime: python3.9
+  name: azure
+  runtime: python3.8
   region: us-east-1
+  environment:
+    SECRET_KEY_JWT: ${env:SECRET_KEY_JWT}
+  app:
+    name: system-education  # Nombre de tu aplicación en Azure
+    os: linux
+    
+
 
 
 functions:
   hello:
+    handler: Handlers/UserHandler.hello
+    events:
+      - http:
+          path: /user/hello_user
+          method: get
+  
+  helloUser:
     handler: handler.hello
     events:
-      - httpApi:
+      - http:
           path: /
           method: get
   
@@ -36,7 +51,7 @@ functions:
     name: Register-User-Role
     handler: Handlers/UserRolesHandler.register_user_role
     events:
-      - httpApi:
+      - http:
           path: /user_rol/register
           method: post
 
@@ -44,7 +59,7 @@ functions:
     name: Get-User-Role
     handler: Handlers/UserRolesHandler.get_user_roles
     events:
-      - httpApi:
+      - http:
           path: /user_rol/list
           method: get
 
@@ -52,7 +67,7 @@ functions:
     name: Update-User-Role
     handler: Handlers/UserRolesHandler.update_user_role
     events:
-      - httpApi:
+      - http:
           path: /user_rol/update
           method: put
 
@@ -60,7 +75,7 @@ functions:
     name: Desactivate-User-Role
     handler: Handlers/UserRolesHandler.desactivate_user_role
     events:
-      - httpApi:
+      - http:
           path: /user_rol/delete
           method: post
 
@@ -68,7 +83,7 @@ functions:
     name: Register-User
     handler: Handlers/UserHandler.create_new_user
     events:
-      - httpApi:
+      - http:
           path: /user/register
           method: post
 
@@ -76,7 +91,7 @@ functions:
     name: Get-Tokens
     handler: Handlers/UserHandler.auth_user
     events:
-      - httpApi:
+      - http:
           path: /user/get_token
           method: post
 
@@ -84,7 +99,7 @@ functions:
     name: Desactivate_User
     handler: Handlers/UserHandler.desactivate_user
     events:
-      - httpApi:
+      - http:
           path: /user/delete_user
           method: post
   
@@ -92,7 +107,7 @@ functions:
     name: Massive_User_Insertion
     handler: Handlers/UserHandler.massive_user_insertion
     events:
-      - httpApi:
+      - http:
           path: /user/insert_masive
           method: post
 
@@ -100,7 +115,7 @@ functions:
     name: Update_User
     handler: Handlers/UserHandler.update_user
     events:
-      - httpApi:
+      - http:
           path: /user/update_user
           method: put
   
@@ -108,7 +123,7 @@ functions:
     name: Get_User
     handler: Handlers/UserHandler.get_users
     events:
-      - httpApi:
+      - http:
           path: /user/list
           method: get
 
@@ -116,7 +131,7 @@ functions:
     name: Assign_Permission_User
     handler: Handlers/UserHandler.user_permission_assign
     events:
-      - httpApi:
+      - http:
           path: /user/user_permission_assign
           method: post
 
@@ -124,7 +139,7 @@ functions:
     name: Register-Function
     handler: Handlers/FunctionHandler.register_function
     events:
-      - httpApi:
+      - http:
           path: /function/register
           method: post
 
@@ -132,7 +147,7 @@ functions:
     name: Get-Function
     handler: Handlers/FunctionHandler.get_functions
     events:
-      - httpApi:
+      - http:
           path: /function/list
           method: get
 
@@ -140,7 +155,7 @@ functions:
     name: Update-Function
     handler: Handlers/FunctionHandler.update_function
     events:
-      - httpApi:
+      - http:
           path: /function/update
           method: put
 
@@ -148,7 +163,7 @@ functions:
     name: Desactivate-Function
     handler: Handlers/FunctionHandler.desactivate_function
     events:
-      - httpApi:
+      - http:
           path: /function/delete
           method: post
 
@@ -156,7 +171,7 @@ functions:
     name: Register-Function-Group
     handler: Handlers/FunctionGroupHandler.register_group_function
     events:
-      - httpApi:
+      - http:
           path: /function_group/register
           method: post
   
@@ -164,7 +179,7 @@ functions:
     name: Get-Function-Group
     handler: Handlers/FunctionGroupHandler.get_function_group
     events:
-      - httpApi:
+      - http:
           path: /function_group/list
           method: get
   
@@ -172,7 +187,7 @@ functions:
     name: Update-Function-Group
     handler: Handlers/FunctionGroupHandler.update_function_group
     events:
-      - httpApi:
+      - http:
           path: /function_group/update
           method: put
 
@@ -180,7 +195,7 @@ functions:
     name: Desactivate-Function-Group
     handler: Handlers/FunctionGroupHandler.desactivate_function_group
     events:
-      - httpApi:
+      - http:
           path: /function_group/delete
           method: post
   
@@ -188,7 +203,7 @@ functions:
     name: Register-Function-Relation
     handler: Handlers/FunctionGroupHandler.register_function_relation
     events:
-      - httpApi:
+      - http:
           path: /function_group/function_assign
           method: post
 
@@ -196,7 +211,7 @@ functions:
     name: Get-Function-Relation
     handler: Handlers/FunctionGroupHandler.get_function_relation
     events:
-      - httpApi:
+      - http:
           path: /function_group/get_function_relation
           method: get
 
@@ -204,7 +219,7 @@ functions:
     name: Register-Function-Group-Auth
     handler: Handlers/FunctionGroupHandler.insert_function_group_auth
     events:
-      - httpApi:
+      - http:
           path: /function_group/function_role_auth
           method: post
   
@@ -212,7 +227,7 @@ functions:
     name: User-Permission-Assing
     handler: Handlers/UserHandler.user_permission_assign
     events:
-      - httpApi:
+      - http:
           path: /user/function_asign
           method: post
 
@@ -221,7 +236,7 @@ functions:
     name: Register_new_ficha
     handler: Handlers/FichasHandler.register_ficha
     events:
-      - httpApi:
+      - http:
           path: /fichas/register_ficha
           method: post
 
@@ -229,7 +244,7 @@ functions:
     name: Get_fichas
     handler: Handlers/FichasHandler.get_fichas
     events:
-      - httpApi:
+      - http:
           path: /fichas/list
           method: get
 
@@ -237,7 +252,7 @@ functions:
     name: Get_Status_Ficha
     handler: Handlers/FichasHandler.get_status
     events:
-      - httpApi:
+      - http:
           path: /fichas/get_status
           method: get
 
@@ -245,7 +260,7 @@ functions:
     name: Desactivate_Ficha
     handler: Handlers/FichasHandler.desactivate_ficha
     events:
-      - httpApi:
+      - http:
           path: /fichas/Desactivate_ficha
           method: post
 
@@ -254,7 +269,7 @@ functions:
     name: Change_Status_Ficha
     handler: Handlers/FichasHandler.change_status
     events:
-      - httpApi:
+      - http:
           path: /fichas/change_status
           method: post
   
@@ -262,7 +277,7 @@ functions:
     name: Get_Fichas_Asigned_Instructor
     handler: Handlers/InstructorHandler.get_fichas_asigned_instructor
     events:
-      - httpApi:
+      - http:
           path: /instructor/get_fichas_asigned_instructor
           method: post
 
@@ -270,7 +285,7 @@ functions:
     name: Register_instructor
     handler: Handlers/InstructorHandler.register_instructor
     events:
-      - httpApi:
+      - http:
           path: /instructor/register
           method: post
 
@@ -278,7 +293,7 @@ functions:
     name: Get_Instructors
     handler: Handlers/InstructorHandler.get_instructor
     events:
-      - httpApi:
+      - http:
           path: /instructor/list
           method: get
   
@@ -286,7 +301,7 @@ functions:
     name: Desactivate_Instructors
     handler: Handlers/InstructorHandler.desactivate_instructor
     events:
-      - httpApi:
+      - http:
           path: /instructor/delete
           method: post
           
@@ -294,7 +309,7 @@ functions:
     name: Assign_Fichas
     handler: Handlers/InstructorHandler.assign_ficha
     events:
-      - httpApi:
+      - http:
           path: /instructor/assign_ficha
           method: post
 
@@ -302,7 +317,7 @@ functions:
     name: Register_Program
     handler: Handlers/ProgramsHandler.register_program
     events:
-      - httpApi:
+      - http:
           path: /programs/register_program
           method: post
 
@@ -310,7 +325,7 @@ functions:
     name: Get_Programs
     handler: Handlers/ProgramsHandler.get_programs
     events:
-      - httpApi:
+      - http:
           path: /programs/list
           method: get
           
@@ -318,6 +333,6 @@ functions:
     name: Desactivate_Program
     handler: Handlers/ProgramsHandler.desactivate_program
     events:
-      - httpApi:
+      - http:
           path: /programs/delete
           method: post

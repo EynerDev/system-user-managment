@@ -4,7 +4,13 @@
     "serverless": "^3.38.0"
   },
   "devDependencies": {
+    "serverless-azure-functions": "^2.2.1",
     "serverless-offline": "^13.8.0",
     "serverless-python-requirements": "^6.1.1"
+  },
+  "overrides": {
+    "serverless-azure-functions": {
+      "serverless": "$serverless"
+    }
   }
 }

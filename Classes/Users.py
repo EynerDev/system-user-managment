@@ -11,6 +11,12 @@ import pandas as pd
 
 
 class User:
+    
+    def hello(self):
+        return {
+                'message': "Hello, user!",
+                'status': 200
+                }
 
     def create_new_user(self, data: dict) -> dict:
         user_name = data["user_name"]
@@ -186,6 +192,8 @@ class User:
 
         user_name = data["user_name"]
         password_user = data["password"]
+        
+        print(data)
 
         updateUser = session.query(UsersModel).filter(
             UsersModel.user_name == user_name,
@@ -197,6 +205,7 @@ class User:
                 "¡ERROR! Usuario no encontrado"
             )
         else:
+            print(password_user)
 
             PasswordEncript = PasswordEncrypt.encrypt(password_user)
             updateUser.password = PasswordEncript
