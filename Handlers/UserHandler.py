@@ -36,7 +36,7 @@ def create_new_user(event, context):
 
 
 @authorizer
-def massive_user_insertion(event, context):
+def insert_masive_apprentice(event, context):
     data = get_event_data(event)
 
     list_validation = [
@@ -44,7 +44,7 @@ def massive_user_insertion(event, context):
 
     val.validate(list_validation)
 
-    result = user.massive_user_insertion(data)
+    result = user.insert_masive_users(data)
 
     return result
 

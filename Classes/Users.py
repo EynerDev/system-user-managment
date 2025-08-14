@@ -33,8 +33,7 @@ class User:
         session.commit()
         return {"statusCode": 201, "data": {"message": "Usuario Registrado"}}
 
-    def massive_user_insertion(self, data):
-
+    def insert_masive_users(self, data):
         archivo = data["file_content_base64"]
 
         decoded_content = base64.b64decode(archivo).decode('utf-8')
@@ -64,7 +63,6 @@ class User:
             csv_data['type_doc'] = csv_data['type_doc'].map(doc_mapping)
             csv_data['user_role_id'] = csv_data['user_role_id'].map(
                 rol_mapping)
-
             print(csv_data["type_doc"].value_counts())
             print(csv_data["user_role_id"].value_counts())
 
@@ -75,7 +73,6 @@ class User:
 
             # Insertar usuarios en la base de datos
             for index, row in csv_data.iterrows():
-                self.validate_user_exist(row["user_name"])
                 password = row.get("password")
                 if password:
                     password_hash = PasswordEncrypt()
@@ -100,7 +97,7 @@ class User:
 
         if validate_user:
             raise AssertionError(
-                f" {user_name} Esta persona ya esta registrada en el sistema"
+                "Esta persona ya esta registrada en el sistema"
             )
 
     def get_user_role_id(self, user_id: int) -> int:
